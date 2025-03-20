@@ -1,0 +1,8 @@
+extend layout 
+
+block content
+  .View
+    .DiscoBox 
+      video(autoplay)#remoteVideo
+      video(autoplay muted)#localVideo
+  script(src="/javascripts/chat.js")
