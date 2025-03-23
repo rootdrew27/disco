@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('chat-site:server');
 var http = require('http');
 const { Server } = require("socket.io");
+const { Room } = require("socket.io");
 
 /**
  * Get port from environment and store in Express.
@@ -36,13 +37,85 @@ server.on('listening', onListening);
 
 const io = new Server(server);
 
-io.on('connection', (socket) => {
-  console.log("User Connection");
+var activeSockets = [];
+var rooms = []; // or read from io.of('/').adapter.rooms
 
-  socket.on('disconnet', () => {
+var idx = 0;
+function generateRoomName(){
+  roomName = "room-" + idx;
+  idx++;
+  return roomName 
+}
+
+function getRandomRoom(){
+  return rooms[Math.floor(Math.random()*rooms.length)];
+}
+
+function joinRoom(socket, new_room=false){
+  let room;
+  if (rooms.length == 0 || new_room === true){
+    room = generateRoomName();
+    rooms.push(room);
+  }
+  else{
+    room = getRandomRoom();
+  }
+  socket.join(room);
+  console.log("Socket: " + socket.id + " Joined room: " + room);
+  socket.to(room).emit("user-joined-room", socket.id);
+  return room;
+}
+
+io.on('connection', (socket) => {
+  console.log('New User Connection: ' + socket.id);
+  const existingSocket = activeSockets.find(
+    (existingSocket) => existingSocket === socket.id
+  );
+
+  if (!existingSocket) {
+    activeSockets.push(socket.id);
+  }
+
+  let room = joinRoom(socket);
+  console.log(io.of('/').adapter.rooms);
+
+  socket.on("offer", data => {
+    console.log("Offer event signaled for: " + socket.id);
+    console.log("TO: " + data.to + " " + "OFFER: " + data.offer)
+    socket.to(data.to).emit("call-made", { offer: data.offer, from: socket.id });
+  });
+
+  // socket.on("join-room", (room) => {
+  //   socket.join(room);
+  //   console.log("Socket: " + socket.id + "Joined room: " + room);
+  //   socket.broadcast.to(room).emit("joined-room", (socket.id, room));
+  // });
+
+  socket.on("make-answer", data => {
+    socket.to(data.to).emit("answer-made", {answer: data.answer, from: socket.id});
+  });
+
+  socket.on("ice-candidate", async (data) => {
+    console.log("Relaying ICE candidate from " + socket.id + " to " + data.to);
+    socket
+      .to(data.to)
+      .emit("ice-candidate", { from: socket.id, candidate: data.candidate });
+  });
+
+  socket.on('disconnect', () => {
     console.log("User Disconnection");
+    activeSockets = activeSockets.filter(
+      existingSocket => existingSocket !== socket.id
+    );
+    socket.broadcast.emit("remove-user", {
+      socketId: socket.id,
+    });
   });
 });
+
+io.on("join-room", (room) => {
+  console.log("The join-room event fired.")
+})
 
 /**
  * Normalize a port into a number, string, or false.
