@@ -7,8 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('chat-site:server');
 var http = require('http');
-const { Server } = require("socket.io");
-const { Room } = require("socket.io");
+import { Server, Socket } from "socket.io";
 
 /**
  * Get port from environment and store in Express.
@@ -27,7 +26,9 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, "0.0.0.0", () => {
+
+});
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -37,12 +38,12 @@ server.on('listening', onListening);
 
 const io = new Server(server);
 
-var activeSockets = [];
-var rooms = []; // or read from io.of('/').adapter.rooms
+var activeSockets: string[] = [];
+var rooms: string[] = []; // or read from io.of('/').adapter.rooms
 
 var idx = 0;
 function generateRoomName(){
-  roomName = "room-" + idx;
+  let roomName = "room-" + idx;
   idx++;
   return roomName 
 }
@@ -51,8 +52,8 @@ function getRandomRoom(){
   return rooms[Math.floor(Math.random()*rooms.length)];
 }
 
-function joinRoom(socket, new_room=false){
-  let room;
+function joinRoom(socket: Socket, new_room: boolean = false){
+  let room: string;
   if (rooms.length == 0 || new_room === true){
     room = generateRoomName();
     rooms.push(room);
@@ -85,12 +86,6 @@ io.on('connection', (socket) => {
     socket.to(data.to).emit("call-made", { offer: data.offer, from: socket.id });
   });
 
-  // socket.on("join-room", (room) => {
-  //   socket.join(room);
-  //   console.log("Socket: " + socket.id + "Joined room: " + room);
-  //   socket.broadcast.to(room).emit("joined-room", (socket.id, room));
-  // });
-
   socket.on("make-answer", data => {
     socket.to(data.to).emit("answer-made", {answer: data.answer, from: socket.id});
   });
@@ -113,15 +108,11 @@ io.on('connection', (socket) => {
   });
 });
 
-io.on("join-room", (room) => {
-  console.log("The join-room event fired.")
-})
-
 /**
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
+function normalizePort(val: any) {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -141,7 +132,7 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error: any) {
   if (error.syscall !== 'listen') {
     throw error;
   }

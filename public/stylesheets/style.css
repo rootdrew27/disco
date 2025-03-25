@@ -72,7 +72,6 @@ a {
   background-size: cover;
 }
 
-
 .StartDisco {
   display: flex;
   justify-content: center;
@@ -126,4 +125,17 @@ a {
   width: 45%;
   height: 65%;
   border: black;
+}
+
+#Login{
+  display: flex;
+  justify-content: right;
+
+  color: black;
+
+  width: 85%;
+  height: 480px;
+
+  font-size: 24px;
+  font-weight: bold;
 }

@@ -3,4 +3,11 @@ extends layout
 block content
   .View 
     a.StartDisco(href="disco") START DISCO 
-    
+
+  if username
+    h3 Welcome #{username}!
+    form(action="/logout", method="POST")
+      button(type="submit") LOGOUT
+  else
+    h3 Welcome Guest!
+    a#Login(href="login", action="post") LOGIN

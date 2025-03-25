@@ -1,0 +1,16 @@
+extends layout 
+
+block content
+
+    <h1>Sign Up</h1>
+    <form action="/signup" method="post">
+        <section>
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" required autofocus>
+        </section>
+        <section>
+            <label for="current-password">Password</label>
+            <input id="current-password" name="password" type="password" required>
+        </section>
+        <button type="submit">Sign Up</button>
+    </form>
