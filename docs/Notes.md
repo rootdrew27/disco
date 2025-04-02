@@ -62,6 +62,13 @@
 
 ## Sessions
 
+## TypeScript
 
+### Declaration Merging
+
+- [Resource](https://www.typescriptlang.org/docs/handbook/declaration-merging.html)
+
+- Declaration Merging allows interfaces to be merged (inherited from).
+    - 
 
 

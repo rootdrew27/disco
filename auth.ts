@@ -6,9 +6,9 @@ import sqlite3 from "sqlite3";
 import DiscoUser from "./classes/DiscoUser";
 
 interface UserResult extends sqlite3.RunResult {
-	username: string,
-	hashed_password: Buffer,
-	salt: crypto.BinaryLike
+  username: string,
+  hashed_password: Buffer,
+  salt: crypto.BinaryLike
 }
 
 passport.use(
@@ -22,7 +22,6 @@ passport.use(
 					message: "Incorrect Username or Password.",
 				});
 			}
-
 			crypto.pbkdf2(
 				password,
 				row.salt,
@@ -48,7 +47,7 @@ passport.use(
 
 passport.serializeUser(function (user: Express.User, done) {
 	process.nextTick(function () {
-		done(null, { id: user.id });
+		done(null, { id: user.id, username:user.username });
 	});
 });
 
@@ -58,8 +57,7 @@ passport.deserializeUser(function (user: Express.User, done) {
 	});
 });
 
-
-function hashPassword(password: string, cb: Function) {
+function hashPassword(password: crypto.BinaryLike, cb: Function) {
 	var salt = crypto.randomBytes(16);
 	crypto.pbkdf2(password, salt, 310000, 32, "sha256", function (err: Error | null, hashedPassword: Buffer) {
 		cb(err, hashedPassword, salt);
@@ -78,7 +76,7 @@ function insertNewUser(username: string, hashedPassword: Buffer, salt: crypto.Bi
 	);
 }
 
-export function signup(username: string, password: string, cb: Function) {
+export function signUp(username: string, password: string, cb: Function) {
 	hashPassword(password,
 		function (err: Error | null, hashedPassword: Buffer, salt: crypto.BinaryLike) {
 			if (err) return cb(err);
@@ -87,4 +85,4 @@ export function signup(username: string, password: string, cb: Function) {
 	);
 }
 
-module.exports = signup;
+export { passport };

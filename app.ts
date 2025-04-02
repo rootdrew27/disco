@@ -1,18 +1,19 @@
 import createError from "http-errors";
-import express, { Request, Response, Express, NextFunction} from "express";
+import express, { Request, Response, NextFunction} from "express";
 import session from "express-session";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
-import connectSQLite3 from "connect-sqlite3";
+import connectSQLite3, { } from "connect-sqlite3";
+import csrf from "csurf";
 
-import { router as indexRouter } from "./routes/index";
-import { router as authRouter } from "./routes/auth";
+import indexRouter from "./routes/index";
+import authRouter from "./routes/auth";
 
-const SQLiteStore = connectSQLite3(session);
+const SQLiteStore = connectSQLite3(session); // returns a class
 
-const app = express();
+export const app = express();
 
 // setup view engine
 app.set("views", path.join(__dirname, "views"));
@@ -29,11 +30,16 @@ app.use(
     secret: "TODO: CHANGE ME",
     resave: false,
     saveUninitialized: false,
-    store: new SQLiteStore({ db: 'sessions.db', dir: './var/db' }) as session.Store, // Use `new` to create an instance
+    // @ts-ignore
+    store: new SQLiteStore({ db: 'sessions.db', dir: './var/db' }), //  
   })
 );
+// app.use(csrf());
 app.use(passport.authenticate("session"));
-
+// app.use(function(req, res, next) {
+//   res.locals.csrfToken = req.csrfToken();
+//   next();
+// });
 // setup routes
 app.use("/", indexRouter);
 app.use("/", authRouter);
@@ -54,4 +60,4 @@ app.use(function (err: createError.HttpError, req:Request, res:Response, next:Ne
   res.render("error");
 });
 
-module.exports = app;
+export default app;

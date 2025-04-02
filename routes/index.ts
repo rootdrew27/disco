@@ -5,15 +5,9 @@ import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { ensureLoggedIn } from "connect-ensure-login";
 
-// var express = require('express');
-// var router = express.Router();
-// var ensureLogIn = require('connect-ensure-login').ensureLoggedIn;
-// var { v4: uuidv4 } = require("uuid");
-// var passport = require("passport");
-
 // var ensureLoggedIn = ensureLoggedIn();
 
-export const router = Router();
+const router = Router();
 
 /* GET home page. */
 router.get('/', function(req: Request, res: Response, next: NextFunction) {
@@ -33,4 +27,4 @@ router.get('/disco/:discoID', function(req: Request, res: Response, next: NextFu
   res.render('disco');
 });
 
-// module.exports = ...
+export default router;

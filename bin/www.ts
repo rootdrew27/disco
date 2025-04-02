@@ -4,10 +4,12 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('chat-site:server');
-var http = require('http');
+import app from "../app";
+import debug from "debug";
+import http from "http";
 import { Server, Socket } from "socket.io";
+
+const debugLog = debug("disco:server"); 
 
 /**
  * Get port from environment and store in Express.
@@ -165,6 +167,10 @@ function onError(error: any) {
 
 function onListening() {
   var addr = httpServer.address();
+  if (addr === null) {
+    console.error("Address is null");
+    return;
+  }
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
