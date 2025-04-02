@@ -20,23 +20,26 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var httpServer = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
- */
+*/
+httpServer.on('error', onError);
+httpServer.on('listening', onListening);
 
-server.listen(port, "0.0.0.0", () => {
-
-});
-server.on('error', onError);
-server.on('listening', onListening);
+httpServer.listen(port);
 
 /**
  * Create a socket server
  */
 
-const io = new Server(server);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://127.0.0.1:3000",
+    methods: ["GET", "POST"],
+  }
+});
 
 var activeSockets: string[] = [];
 var rooms: string[] = []; // or read from io.of('/').adapter.rooms
@@ -161,9 +164,9 @@ function onError(error: any) {
  */
 
 function onListening() {
-  var addr = server.address();
+  var addr = httpServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }

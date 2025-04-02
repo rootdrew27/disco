@@ -4,7 +4,11 @@
     "compilerOptions": {
         "outDir": "./built",
         "allowJs": true,
-        "target": "ES5"
+        "target": "ES5",
+        "typeRoots": [
+            "@types",
+            "./node_modules/@types"
+        ]
     },
-    "include": ["bin/**/*"]
+    "include": ["*.d.ts", "bin/**/*", "*.ts"],
 }
