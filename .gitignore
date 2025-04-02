@@ -140,4 +140,3 @@ dist
 .vscode/
 /built
 *.db
-/var
