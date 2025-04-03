@@ -1,0 +1,14 @@
+# Ignore artifcats:
+built
+
+# Ignore pug files:
+src/**/*.pug
+
+# Ignore stylesheets (css):
+src/**/*.css
+
+
+# Ignore Image Dir:
+public/images
+
+# Ignore test:

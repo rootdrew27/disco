@@ -4,29 +4,29 @@
  * Module dependencies.
  */
 
-import app from "../app";
-import debug from "debug";
-import http from "http";
-import { Server, Socket } from "socket.io";
+import app from '../app';
+import debug from 'debug';
+import http from 'http';
+import { Server, Socket } from 'socket.io';
 
-const debugLog = debug("disco:server"); 
+const debugLog = debug('disco:server');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var httpServer = http.createServer(app);
+const httpServer = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
-*/
+ */
 httpServer.on('error', onError);
 httpServer.on('listening', onListening);
 
@@ -38,76 +38,78 @@ httpServer.listen(port);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://127.0.0.1:3000",
-    methods: ["GET", "POST"],
-  }
+    origin: 'http://127.0.0.1:3000',
+    methods: ['GET', 'POST'],
+  },
 });
 
-var activeSockets: string[] = [];
-var rooms: string[] = []; // or read from io.of('/').adapter.rooms
+let activeSockets: string[] = [];
+const rooms: string[] = []; // or read from io.of('/').adapter.rooms
 
-var idx = 0;
-function generateRoomName(){
-  let roomName = "room-" + idx;
+let idx = 0;
+function generateRoomName() {
+  const roomName = 'room-' + idx;
   idx++;
-  return roomName 
+  return roomName;
 }
 
-function getRandomRoom(){
-  return rooms[Math.floor(Math.random()*rooms.length)];
+function getRandomRoom() : string {
+  return rooms[Math.floor(Math.random() * rooms.length)];
 }
 
-function joinRoom(socket: Socket, new_room: boolean = false){
+function joinRoom(socket: Socket, new_room: boolean = false) : void {
   let room: string;
-  if (rooms.length == 0 || new_room === true){
+  if (rooms.length == 0 || new_room === true) {
     room = generateRoomName();
     rooms.push(room);
-  }
-  else{
+  } else {
     room = getRandomRoom();
   }
   socket.join(room);
-  console.log("Socket: " + socket.id + " Joined room: " + room);
-  socket.to(room).emit("user-joined-room", socket.id);
-  return room;
+  console.log('Socket: ' + socket.id + ' Joined room: ' + room);
+  socket.to(room).emit('user-joined-room', socket.id);
 }
 
 io.on('connection', (socket) => {
   console.log('New User Connection: ' + socket.id);
   const existingSocket = activeSockets.find(
-    (existingSocket) => existingSocket === socket.id
+    (existingSocket) => existingSocket === socket.id,
   );
 
   if (!existingSocket) {
     activeSockets.push(socket.id);
   }
 
-  let room = joinRoom(socket);
+  joinRoom(socket);
   console.log(io.of('/').adapter.rooms);
 
-  socket.on("offer", data => {
-    console.log("Offer event signaled for: " + socket.id);
-    console.log("TO: " + data.to + " " + "OFFER: " + data.offer)
-    socket.to(data.to).emit("call-made", { offer: data.offer, from: socket.id });
-  });
-
-  socket.on("make-answer", data => {
-    socket.to(data.to).emit("answer-made", {answer: data.answer, from: socket.id});
-  });
-
-  socket.on("ice-candidate", async (data) => {
-    console.log("Relaying ICE candidate from " + socket.id + " to " + data.to);
+  socket.on('offer', (data) => {
+    console.log('Offer event signaled for: ' + socket.id);
+    console.log('TO: ' + data.to + ' ' + 'OFFER: ' + data.offer);
     socket
       .to(data.to)
-      .emit("ice-candidate", { from: socket.id, candidate: data.candidate });
+      .emit('call-made', { offer: data.offer, from: socket.id });
+  });
+
+  socket.on('make-answer', (data) => {
+    socket
+      .to(data.to)
+      .emit('answer-made', { answer: data.answer, from: socket.id });
+  });
+
+  socket.on('ice-candidate', async (data) => {
+    console.log('Relaying ICE candidate from ' + socket.id + ' to ' + data.to);
+    socket
+      .to(data.to)
+      .emit('ice-candidate', { from: socket.id, candidate: data.candidate });
   });
 
   socket.on('disconnect', () => {
-    console.log("User Disconnection");
+    console.log('User Disconnection');
     activeSockets = activeSockets.filter(
-      existingSocket => existingSocket !== socket.id
+      (existingSocket) => existingSocket !== socket.id,
     );
-    socket.broadcast.emit("remove-user", {
+    socket.broadcast.emit('remove-user', {
       socketId: socket.id,
     });
   });
@@ -117,8 +119,8 @@ io.on('connection', (socket) => {
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val: any) {
-  var port = parseInt(val, 10);
+function normalizePort(val: string) {
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -137,14 +139,12 @@ function normalizePort(val: any) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error: any) {
+function onError(error: NodeJS.ErrnoException) {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -166,13 +166,12 @@ function onError(error: any) {
  */
 
 function onListening() {
-  var addr = httpServer.address();
+  const addr = httpServer.address();
   if (addr === null) {
-    console.error("Address is null");
+    console.error('Address is null');
     return;
   }
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   console.log('Listening on ' + bind);
+  debugLog('Listening on ' + bind)
 }
