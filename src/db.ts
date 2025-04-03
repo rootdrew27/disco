@@ -20,6 +20,6 @@ db.serialize(function () {
   var salt: Buffer = crypto.randomBytes(16);
   db.run(
     "INSERT OR IGNORE INTO users (username, hashed_password, salt) VALUES (?, ?, ?)",
-    ["alice", crypto.pbkdf2Sync("letmein", salt, 310000, 32, "sha256"), salt]
+    ["testuser", crypto.pbkdf2Sync("password", salt, 310000, 32, "sha256"), salt]
   );
 });

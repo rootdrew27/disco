@@ -2,10 +2,9 @@ import express, { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import sqlite3 from "sqlite3";
 import { Strategy as LocalStrategy } from "passport-local";
-import { passport } from "../auth";
+import { passport, signUp } from "../auth";
 import crypto from "crypto";
 import { db } from "../db";
-import { signUp } from "../auth";
 
 const router = Router();
 

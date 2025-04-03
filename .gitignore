@@ -140,3 +140,5 @@ dist
 .vscode/
 /built
 *.db
+
+/docs/private*
