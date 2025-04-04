@@ -4,7 +4,7 @@
     "compilerOptions": {
         "outDir": "./built",
         "allowJs": true,
-        "target": "ES5",
+        "target": "es2015",
         "types": ["jest"],
         "typeRoots": [
             "@types",

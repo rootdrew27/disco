@@ -58,49 +58,27 @@ passport.deserializeUser(function (user: Express.User, done) {
   });
 });
 
-function hashPassword(password: crypto.BinaryLike, cb: (err: Error | null, hashedPassword: Buffer, salt: crypto.BinaryLike) => void) {
-  const salt = crypto.randomBytes(16);
-  crypto.pbkdf2(
-    password,
-    salt,
-    310000,
-    32,
-    'sha256',
-    function (err: Error | null, hashedPassword: Buffer) {
-      cb(err, hashedPassword, salt);
-    },
-  );
-}
-
-function insertNewUser(
-  username: string,
-  hashedPassword: Buffer,
-  salt: crypto.BinaryLike,
-  cb: (err: Error | null, user?: DiscoUser) => void,
-) {
-  db.run(
-    'INSERT INTO users (username, hashed_password, salt) VALUES (?, ?, ?)',
-    [username, hashedPassword, salt],
-    function (err: Error | null) {
-      const user = new DiscoUser(this.lastID, username);
-      if (err) return cb(err);
-      cb(err, user);
-    },
-  );
-}
-
 export function signUp(username: string, password: string, cb: (err: Error | null, user?: DiscoUser) => void) {
-  hashPassword(
-    password,
-    function (
-      err: Error | null,
-      hashedPassword: Buffer,
-      salt: crypto.BinaryLike,
-    ) {
-      if (err) return cb(err);
-      insertNewUser(username, hashedPassword, salt, cb);
-    },
-  );
+    const salt = crypto.randomBytes(16);
+    crypto.pbkdf2(
+      password,
+      salt,
+      310000,
+      32,
+      'sha256',
+      function (err: Error | null, hashedPassword: Buffer) {
+        if (err) return cb(err);
+        db.run(
+          'INSERT INTO users (username, hashed_password, salt) VALUES (?, ?, ?)',
+          [username, hashedPassword, salt],
+          function (err: Error | null) {
+            const user = new DiscoUser(this.lastID, username);
+            if (err) return cb(err);
+            cb(err, user);
+          }
+        );
+      },
+    );
 }
 
 export { passport };

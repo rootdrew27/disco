@@ -4,6 +4,7 @@
 - https://auth0.com/blog/create-a-simple-and-stylish-node-express-app/
     - Links to Authentication Setup Tool (Auth0)
 - https://tsh.io/blog/how-to-write-video-chat-app-using-webrtc-and-nodejs/ (Simple Video chat demo)
+- [TypeScript CheatSheet](https://www.typescriptlang.org/cheatsheets/) (Classes, Types, Interfaces, CFA)
 
 
 ## Express
@@ -63,6 +64,11 @@
 ## Sessions
 
 ## TypeScript
+
+### Functions
+- There are **two** types of functions:
+    1. Literal functions: e.g. `function myFunc(){}`
+    2. Contextual function: e.g. `let a = () => {}` or `let a = function(){}`
 
 ### Declaration Merging
 

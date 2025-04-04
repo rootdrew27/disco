@@ -1,20 +1,27 @@
 # TODO
 - [x] Learn/finish setting up TypeScript
 - [x] Resturcture Project (use src/)
-- [ ] Finish setting up ESLINT
-- [ ] Set up testing framework
-- [ ] Work with Sessions (Create Branch!!!)
+- [x] Finish setting up ESLINT
+- [x] Set up testing framework
+- [ ] Review TypeScript Handbook
+- [x] Combine the logic used in the /signup route, as additional [scopes and closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures#performance_considerations) create unecessary overhead. 
+    - [ ] Review JavaScript Resources (if needed)
+- [ ] Work with Sessions (**Remember**: Create Branches)
     - [ ] Return useful message when registering with non-unique username (catch sql exception)
     - [ ] Use session info in other routes/views
     - [ ] Implement auto logout
+- [ ] Review Testing tools (Jest, supertest, etc.)
+    - [ ] Implement additional tests!
 - [ ] Add login support via Google (and Twitter?)
-- [ ] Learn and make notes on Nodejs/Express
+- [ ] Review Express
     - [ ] Review changes for [Express v5](https://expressjs.com/en/guide/migrating-5.html)
     - [ ] Sessions
     - [ ] Explore available middleware.
     - [ ] Implement custom middleware (e.g. error handling).
-- [ ] Review CORS
 - [ ] Deep dive into debugging (e.g. launch.json, w/TS, w/nodemon etc.)
+    - [ ] Fix issue with debugger (too many are being attached...)
+- [ ] Fix issue with favicon
+- [ ] Review CORS
 
 ## Future
 - [ ] Learn and apply React
