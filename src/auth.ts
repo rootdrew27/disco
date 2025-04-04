@@ -2,16 +2,8 @@ import passport from 'passport';
 import { IVerifyOptions, Strategy as LocalStrategy } from 'passport-local';
 import crypto from 'crypto';
 import { db } from './db';
-import sqlite3 from 'sqlite3';
 import DiscoUser from './classes/DiscoUser';
-
-//  
-interface UserResult extends sqlite3.RunResult {
-  id: number;
-  username: string;
-  hashed_password: Buffer;
-  salt: crypto.BinaryLike;
-}
+import UserResult from './classes/database/UserResult';
 
 passport.use(
   new LocalStrategy(function verify(
