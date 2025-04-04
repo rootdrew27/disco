@@ -10,5 +10,5 @@
             "./node_modules/@types"
         ]
     },
-    "include": ["*.d.ts", "bin/**/*", "*.ts"],
+    "include": ["**/@types//**/*.d.ts", "src/**/*.ts"],
 }
