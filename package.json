@@ -13,7 +13,6 @@
     "connect-ensure-login": "^0.1.1",
     "connect-redis": "^8.0.2",
     "connect-sqlite3": "^0.9.15",
-    "cookie-parser": "~1.4.4",
     "csrf": "^3.1.0",
     "debug": "~2.6.9",
     "ejs": "^3.1.10",

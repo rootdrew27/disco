@@ -2,7 +2,6 @@ import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import path from 'path';
-import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import passport from 'passport';
 import connectSQLite3 from 'connect-sqlite3';
@@ -23,7 +22,6 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
