@@ -4,18 +4,22 @@
 - [x] Finish setting up ESLINT
 - [x] Set up testing framework
 - [ ] Review TypeScript Handbook
+    - [ ] Classes
+    - [ ] Object Types
+    - [ ] Type Manipulation
 - [x] Combine the logic used in the /signup route, as additional [scopes and closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures#performance_considerations) create unecessary overhead. 
     - [ ] Review JavaScript Resources (if needed)
 - [ ] Work with Sessions (**Remember**: Create Branches)
-    - [ ] Return useful message when registering with non-unique username (catch sql exception)
+    - [x] Return useful message when registering with non-unique username (catch sql exception)
     - [ ] Use session info in other routes/views
     - [ ] Implement auto logout
+    - [ ] Set expiration time
 - [ ] Review Testing tools (Jest, supertest, etc.)
-    - [ ] Implement additional tests!
+    - [ ] Try to implement tests for webrtc connection
+- [ ] Make login and sign up asyncrhonous
 - [ ] Add login support via Google (and Twitter?)
 - [ ] Review Express
     - [ ] Review changes for [Express v5](https://expressjs.com/en/guide/migrating-5.html)
-    - [ ] Sessions
     - [ ] Explore available middleware.
     - [ ] Implement custom middleware (e.g. error handling).
 - [ ] Deep dive into debugging (e.g. launch.json, w/TS, w/nodemon etc.)

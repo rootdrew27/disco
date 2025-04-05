@@ -71,9 +71,9 @@ export function signUp(username: string, password: string, cb: (err: Error | nul
         db.run(
           'INSERT INTO users (username, hashed_password, salt) VALUES (?, ?, ?)',
           [username, hashedPassword, salt],
-          function (err: Error | null) {
-            const user = new DiscoUser(this.lastID, username);
+          function (this: UserResult, err: Error | null) {
             if (err) return cb(err);
+            const user = new DiscoUser(this.lastID, username);
             cb(err, user);
           }
         );

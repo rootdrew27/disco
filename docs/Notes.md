@@ -67,8 +67,8 @@
 
 ### Functions
 - There are **two** types of functions:
-    1. Literal functions: e.g. `function myFunc(){}`
-    2. Contextual function: e.g. `let a = () => {}` or `let a = function(){}`
+    1. Literal functions (Declaration): e.g. `function myFunc(){}`
+    2. Contextual function (Expression): e.g. `let a = () => {}` or `let a = function(){}`
 
 ### Declaration Merging
 
