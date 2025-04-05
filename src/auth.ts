@@ -19,9 +19,7 @@ passport.use(
           return done(err);
         }
         if (!row) {
-          return done(null, false, {
-            message: 'Incorrect Username or Password.',
-          });
+          return done(null, false);
         }
         crypto.pbkdf2(
           password,
@@ -34,9 +32,7 @@ passport.use(
               return done(err);
             }
             if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-              return done(null, false, {
-                message: 'Incorrect Username or Password.',
-              });
+              return done(null, false);
             }
             return done(null, row);
           },
