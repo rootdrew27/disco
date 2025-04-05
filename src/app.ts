@@ -25,8 +25,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
+    name: 'connect.sid', // default
     secret: 'TODO: CHANGE ME',
     resave: false,
+    cookie: {
+      sameSite: 'strict',
+      secure: false, // TODO: set to true
+    },
     saveUninitialized: false,
     // @ts-expect-error the sqlitestore types are not compatible with express-session
     store: new SQLiteStore({ db: 'sessions.db', dir: './var/db' }), //
