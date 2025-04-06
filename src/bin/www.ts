@@ -53,11 +53,11 @@ function generateRoomName() {
   return roomName;
 }
 
-function getRandomRoom() : string {
+function getRandomRoom(): string {
   return rooms[Math.floor(Math.random() * rooms.length)];
 }
 
-function joinRoom(socket: Socket, new_room: boolean = false) : void {
+function joinRoom(socket: Socket, new_room: boolean = false): void {
   let room: string;
   if (rooms.length == 0 || new_room === true) {
     room = generateRoomName();
@@ -173,5 +173,5 @@ function onListening() {
   }
   const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   console.log('Listening on ' + bind);
-  debugLog('Listening on ' + bind)
+  debugLog('Listening on ' + bind);
 }

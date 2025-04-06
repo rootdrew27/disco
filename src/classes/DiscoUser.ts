@@ -5,7 +5,6 @@ class DiscoUser implements Express.User {
     this.id = id;
     this.username = username;
   }
-  
 }
 
 export default DiscoUser;

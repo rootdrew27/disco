@@ -14,18 +14,12 @@ router.get('/', function (req: Request, res: Response) {
   }
 });
 
-router.get(
-  '/disco',
-  function (req: Request, res: Response) {
-    res.render('disco');
-  },
-);
+router.get('/disco', function (req: Request, res: Response) {
+  res.render('disco');
+});
 
-router.get(
-  '/disco/:discoID',
-  function (req: Request, res: Response) {
-    res.render('disco');
-  },
-);
+router.get('/disco/:discoID', function (req: Request, res: Response) {
+  res.render('disco');
+});
 
 export default router;
