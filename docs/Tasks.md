@@ -11,9 +11,7 @@
     - [ ] Review JavaScript Resources (if needed)
 - [ ] Work with Sessions (**Remember**: Create Branches)
     - [x] Return useful message when registering with non-unique username (catch sql exception)
-    - [ ] Use session info in other routes/views
-    - [ ] Implement auto logout
-    - [ ] Set expiration time
+    - [x] Use session info in other routes/views
 - [ ] Review Testing tools (Jest, supertest, etc.)
     - [ ] Try to implement tests for webrtc connection
 - [ ] Make login and sign up asyncrhonous
