@@ -10,10 +10,28 @@ router.get('/login', function (_, res: Response) {
 
 router.post(
   '/login/password',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  }),
+  (req: Request, res: Response, next: NextFunction) => {
+    const returnTo = req.session.returnTo; // Save the returnTo property
+
+    passport.authenticate('local', (err: Error | null, user: Express.User) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect('/login');
+      }
+
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+
+        // Redirect to the original page or fallback to '/'
+        const redirectUrl = returnTo ? returnTo : '/';
+        res.redirect(redirectUrl);
+      });
+    })(req, res, next);
+  },
 );
 
 router.post(
@@ -40,8 +58,10 @@ router.post(
       req.body.password,
       function (err: Error | null, user?: DiscoUser) {
         if (err) {
-          if ('errno' in err) { 
-            return res.status(430).send("Username already exists. Please choose another.");
+          if ('errno' in err) {
+            return res
+              .status(430)
+              .send('Username already exists. Please choose another.');
           }
         } else if (!user) {
           return next(err);

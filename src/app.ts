@@ -9,6 +9,7 @@ import connectSQLite3 from 'connect-sqlite3';
 
 import indexRouter from './routes/index';
 import authRouter from './routes/auth';
+import profRouter from './routes/prof';
 
 const SQLiteStore = connectSQLite3(session); // returns a class
 
@@ -46,6 +47,7 @@ app.use(passport.authenticate('session'));
 // setup routes
 app.use('/', indexRouter);
 app.use('/', authRouter);
+app.use('/', profRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -53,11 +55,7 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
 });
 
 // error handler
-app.use(function (
-  err: createError.HttpError,
-  req: Request,
-  res: Response,
-) {
+app.use(function (err: createError.HttpError, req: Request, res: Response) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
